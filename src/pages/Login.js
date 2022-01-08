@@ -1,19 +1,47 @@
 import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../assets/css/Login.css"
+import { facebookSignInInitiate, googleSignInInitiate, loginInitiate } from '../store/actions';
 
 export default function Login() {
     const [state, setState] = useState({
         email: "",
         password: ""
     })
+    const {currentUser} = useSelector(state => state.user);
 
     const {email, password} = state;
-    const handleSubmit = () => {}
-    const handleGoogleSignIn = () => {}
-    const handleFacebookSignIn = () => {}
-    const handleChange = () => {}
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(currentUser);
+        if (currentUser) {
+            navigate("/")
+        }
+    },[currentUser, navigate])
+
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!email || !password) {
+            return;
+        }
+        dispatch(loginInitiate(email, password));
+        setState({email: "", password: ""})
+    }
+    const handleGoogleSignIn = () => {
+        dispatch(googleSignInInitiate());
+    }
+    const handleFacebookSignIn = () => {
+        dispatch(facebookSignInInitiate());
+    }
+    const handleChange = (e) => {
+        let {name, value} = e.target;
+        setState({...state, [name]: value})
+    }  
     return (
         <div>
             <div id="logreg-forms">

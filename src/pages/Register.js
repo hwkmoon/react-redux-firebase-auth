@@ -13,13 +13,13 @@ export default function Register() {
     })
     const {currentUser} = useSelector(state => state.user);
 
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (currentUser) {
-            history.push("/")
+            navigate("/")
         }
-    },[currentUser, history])
+    },[currentUser, navigate])
 
     const dispatch = useDispatch();
 
